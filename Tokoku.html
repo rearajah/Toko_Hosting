@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id" class="transition duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harga & Pemesanan - Rear OfficiaL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition duration-300">
+
+  <!-- Header -->
+  <header class="bg-purple-700 text-white p-6 flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold">Rear OfficiaL</h1>
+      <p class="text-sm">Website Pemesanan Hosting Rear OfficiaL</p>
+    </div>
+    <button onclick="toggleDarkMode()" class="bg-white text-purple-700 px-3 py-1 rounded hover:bg-purple-100 text-sm dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+      switch to gelap/terang
+    </button>
+  </header>
+
+  <!-- Kalkulator Harga -->
+  <section class="py-10">
+    <div class="container mx-auto max-w-xl px-4">
+      <h2 class="text-xl font-semibold text-purple-800 dark:text-purple-300 mb-4">Produk Rear OfficiaL</h2>
+
+      <label for="jenisLayanan" class="block mb-1">Pilih layanan:</label>
+      <select id="jenisLayanan" class="w-full p-2 border rounded mb-4 dark:bg-gray-800 dark:border-gray-600 dark:text-white" onchange="ubahForm(); hitungHarga()">
+        <option value="pt">PT Panel - Rp25.000 (selamanya)</option>
+        <option value="admin">Admin Panel - Rp15.000 (selamanya)</option>
+        <option value="reseller">Reseller Panel - Rp7.000 (selamanya)</option>
+        <option value="wa">Bot WhatsApp - Rp1.000/hari</option>
+        <option value="ptero">Panel Pterodactyl - Rp1.000/GB</option>
+      </select>
+
+      <div id="durasiInput" class="mb-4 hidden">
+        <label for="durasi" class="block mb-1">Jumlah Hari:</label>
+        <input type="number" id="durasi" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600 dark:text-white" oninput="hitungHarga()" />
+      </div>
+
+      <div id="gbInput" class="mb-4 hidden">
+        <label for="jumlahGB" class="block mb-1">Jumlah GB RAM:</label>
+        <input type="number" id="jumlahGB" class="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-600 dark:text-white" oninput="hitungHarga()" />
+      </div>
+
+      <p id="hasilHarga" class="mt-4 font-semibold text-purple-700 dark:text-purple-300"></p>
+    </div>
+  </section>
+
+  <!-- Form Pemesanan -->
+  <section class="py-10 bg-white dark:bg-gray-800 border-t dark:border-gray-600">
+    <div class="container mx-auto max-w-xl px-4">
+      <h2 class="text-xl font-semibold text-purple-800 dark:text-purple-300 mb-4">Form Pemesanan</h2>
+
+      <input id="nama" type="text" placeholder="Nama Lengkap" class="w-full p-2 border rounded mb-3 dark:bg-gray-800 dark:border-gray-600 dark:text-white" />
+      <input id="email" type="email" placeholder="Email Aktif" class="w-full p-2 border rounded mb-3 dark:bg-gray-800 dark:border-gray-600 dark:text-white" />
+      <input id="wa" type="text" placeholder="Nomor WhatsApp Anda" class="w-full p-2 border rounded mb-3 dark:bg-gray-800 dark:border-gray-600 dark:text-white" />
+      <textarea id="catatan" placeholder="Catatan tambahan (opsional)" class="w-full p-2 border rounded mb-4 dark:bg-gray-800 dark:border-gray-600 dark:text-white"></textarea>
+
+      <button onclick="kirimPesan()" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Kirim via WhatsApp</button>
+    </div>
+  </section>
+
+  <!-- Metode Pembayaran -->
+  <section class="py-10 bg-purple-50 dark:bg-gray-900 border-t border-purple-200 dark:border-gray-700">
+    <div class="container mx-auto max-w-xl px-4">
+      <h2 class="text-xl font-semibold text-purple-800 dark:text-purple-300 mb-4 text-center">Metode Pembayaran</h2>
+
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-4 border-l-4 border-purple-500">
+        <h3 class="font-bold text-purple-700 dark:text-purple-300">QRIS</h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Scan kode QR di bawah ini untuk membayar:</p>
+        <img src="https://img1.pixhost.to/images/5718/598086344_rulzz-official.jpg" alt="QRIS Rear OfficiaL" class="w-full max-w-xs mx-auto border-4 border-purple-500 rounded">
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-4 border-l-4 border-purple-500">
+        <h3 class="font-bold text-purple-700 dark:text-purple-300">DANA</h3>
+        <p class="text-gray-700 dark:text-gray-300">Nomor: <span id="danaNomor">081269910013</span></p>
+        <button onclick="salinTeks('danaNomor')" class="mt-2 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 text-sm">Salin</button>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border-l-4 border-purple-500">
+        <h3 class="font-bold text-purple-700 dark:text-purple-300">OVO</h3>
+        <p class="text-gray-700 dark:text-gray-300">Nomor: <span id="ovoNomor">083839976528</span></p>
+        <button onclick="salinTeks('ovoNomor')" class="mt-2 px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 text-sm">Salin</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-purple-100 dark:bg-gray-800 text-center py-4 text-purple-700 dark:text-purple-300">
+    <p>&copy; 2025 Rear OfficiaL. Solusi Hosting Terbaik Masa Kini.</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    let totalHarga = 0;
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    function ubahForm() {
+      const jenis = document.getElementById('jenisLayanan').value;
+      document.getElementById('durasiInput').classList.add('hidden');
+      document.getElementById('gbInput').classList.add('hidden');
+      document.getElementById('durasi').value = '';
+      document.getElementById('jumlahGB').value = '';
+      document.getElementById('hasilHarga').innerText = '';
+      totalHarga = 0;
+
+      if (jenis === 'wa') {
+        document.getElementById('durasiInput').classList.remove('hidden');
+      } else if (jenis === 'ptero') {
+        document.getElementById('gbInput').classList.remove('hidden');
+      }
+    }
+
+    function formatRupiah(angka) {
+      return `Rp${angka.toLocaleString('id-ID')}`;
+    }
+
+    function hitungHarga() {
+      const jenis = document.getElementById('jenisLayanan').value;
+      const hari = parseInt(document.getElementById('durasi').value);
+      const gb = parseInt(document.getElementById('jumlahGB').value);
+
+      switch (jenis) {
+        case 'pt': totalHarga = 25000; break;
+        case 'admin': totalHarga = 15000; break;
+        case 'reseller': totalHarga = 7000; break;
+        case 'wa':
+          if (isNaN(hari) || hari <= 0) {
+            totalHarga = 0;
+            document.getElementById('hasilHarga').innerText = '';
+            return;
+          }
+          totalHarga = hari * 1000;
+          break;
+        case 'ptero':
+          if (isNaN(gb) || gb <= 0) {
+            totalHarga = 0;
+            document.getElementById('hasilHarga').innerText = '';
+            return;
+          }
+          totalHarga = gb * 1000;
+          break;
+      }
+
+      document.getElementById('hasilHarga').innerText = `Total: ${formatRupiah(totalHarga)}`;
+    }
+
+    function kirimPesan() {
+      const nama = document.getElementById('nama').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const waUser = document.getElementById('wa').value.trim();
+      const catatan = document.getElementById('catatan').value.trim();
+      const layanan = document.getElementById('jenisLayanan').selectedOptions[0].text;
+
+      if (!nama || !email || !waUser || totalHarga === 0) {
+        alert("Lengkapi semua data dan hitung harga terlebih dahulu.");
+        return;
+      }
+
+      const pesan = `Halo Rear OfficiaL, saya ingin memesan layanan:%0A
+- Nama: ${nama}%0A
+- Email: ${email}%0A
+- WhatsApp: ${waUser}%0A
+- Layanan: ${layanan}%0A
+- Total Harga: ${formatRupiah(totalHarga)}%0A
+- Catatan: ${catatan || '-'}%0A
+%0AMohon konfirmasinya, terima kasih!`;
+
+      const nomorTujuan = "6283839976528";
+      const link = `https://wa.me/${nomorTujuan}?text=${pesan}`;
+      window.open(link, '_blank');
+    }
+
+    function salinTeks(id) {
+      const teks = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(teks).then(() => {
+        alert(`Teks "${teks}" berhasil disalin.`);
+      }).catch(() => {
+        alert("Gagal menyalin teks.");
+      });
+    }
+
+    window.onload = ubahForm;
+  </script>
+
+</body>
+</html>
